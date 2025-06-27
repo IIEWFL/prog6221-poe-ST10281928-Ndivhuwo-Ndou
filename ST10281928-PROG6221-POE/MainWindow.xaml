@@ -7,10 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="output" IsReadOnly="True" HorizontalAlignment="Center" Margin="0,56,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="635" Height="279" VerticalScrollBarVisibility="Visible"/>
+        <TextBox x:Name="output" IsReadOnly="True" HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="740" Height="325" VerticalScrollBarVisibility="Visible"/>
         <TextBox x:Name="input" HorizontalAlignment="Left" Margin="145,364,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="340" Height="32"/>
         <Button Name="send_input" Content="Enter" HorizontalAlignment="Left" Margin="528,364,0,0" VerticalAlignment="Top" Width="95" Height="32" Click="send_input_Click"/>
-        <Button  Name="send" Content="Button" HorizontalAlignment="Left" Margin="30,364,0,0" VerticalAlignment="Top" Width="96" Click="send_Click"/>
 
     </Grid>
 </Window>

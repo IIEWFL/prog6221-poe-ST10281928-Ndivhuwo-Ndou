@@ -21,12 +21,17 @@ namespace ST10281928_PROG6221_POE
     /// </summary>
     public partial class MainWindow : Window
     {
+        public string userName;
+        private int count;
         private Responses resp;
         private Functionality func;
         public MainWindow()
         {
             InitializeComponent();
             resp = new Responses(output, func);
+            output.AppendText(art());
+            greeting();
+            output.ScrollToEnd();
             Play_Audio();
         }
 
@@ -38,18 +43,66 @@ namespace ST10281928_PROG6221_POE
             welcome.Load();
             welcome.Play();
         }
-        private void send_input_Click(object sender, RoutedEventArgs e)
+        public string art()
         {
-            //input.Text = "";
-            resp.Basic_Responses(input.Text);
-            output.ScrollToEnd();
-            input.Text = "";
+            string art = @"                                                    
+                                                    
+                  .              ...                
+                  +    .=:.     .-:. =              
+                  +     .--.  .-:.   =              
+                  +     .--. :=..    =              
+        ......+=    .:..*++:::=:.    .              
+         ...  ::  .:=+-=-..-=-+=-.                  
+              :: .++:. ..::.. .:++.   .=-.          
+              :-==+* .+:=-==:*. *+.   :=..          
+              .---+*:+=-*++*-=+-*+:..===.           
+        .:::::   .+#-+=-=++=-=+-*+::+....           
+          -=+++++++#:=..=-==..=-*+. -.              
+          ..-. ...*#.=#:*==*.#+.**. -.              
+            :.    ---..=#***+..---.   .....         
+                 .:=+=:.     :=*+=-                 
+                .::=-:+=-==-=+=*:.-.                
+                .+:.  ..:==:..:*#*. -:              
+        .........=. .=: .-=. =*%:   -:              
+             ...:+. .=: .==.  .-=   -:              
+               .:=. .=: .==.        -:              
+                    ...  ..         ..              
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    ";
+            return art;
         }
 
-        private void send_Click(object sender, RoutedEventArgs e)
+        public void greeting()
         {
-            input.Text = "";
-            resp.Basic_Responses(input.Text);
+            output.AppendText("Hi I am a cyber security chatbot.\nI am here to assist you with learning more\n" +
+                "about cyber security and being safe online.\n" +
+                "Why don't we start off by you telling me your name?\n");
         }
+        private void send_input_Click(object sender, RoutedEventArgs e)
+        {
+            if (count == 0)
+            {
+                userName = input.Text;
+                output.AppendText($"{userName} nice to meet you. Welcome, I hope I will be of great help to you\nAsk me anything\n" +
+                $"Type 'exit' to stop the chatbot\n");
+                output.ScrollToEnd();
+                input.Text = "";
+                count++;
+            }
+            else
+            {
+
+
+                output.AppendText($"{input.Text}\n");
+                resp.Basic_Responses(input.Text);
+                output.ScrollToEnd();
+                input.Text = "";
+            }
+        }
+
     }
 }

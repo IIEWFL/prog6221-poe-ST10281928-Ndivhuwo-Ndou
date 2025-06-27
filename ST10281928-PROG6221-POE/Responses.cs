@@ -10,6 +10,7 @@ namespace ST10281928_PROG6221_POE
 {
     class Responses
     {
+        public string userName;
         private TextBox outputBox;
         private Functionality func;
         public Responses(TextBox outputBox, Functionality func)
@@ -133,6 +134,7 @@ namespace ST10281928_PROG6221_POE
             "\nhearing more about it you get frustrated. Let me try giving you tips to calm your\n" +
             "frustration:" },
     };
+ 
         public void Basic_Responses(string input)
         {
             try
@@ -149,20 +151,15 @@ namespace ST10281928_PROG6221_POE
                     return;
                 }
 
-                if(taskRemider == true)
+                if(func.inTask == true)
                 {
-                    int counter = 0;
-                    if (counter <= 3)
-                    {
                         func.taskAssistant(input);
-                        counter++;
                         return;
-                    }
-                    else
-                    {
-                        taskRemider = false;
-                    }
-
+                }
+                if (func.quizMode == true)
+                {
+                    func.quiz(input);
+                    return;
                 }
 
                 switch (input.ToLower())
@@ -180,6 +177,9 @@ namespace ST10281928_PROG6221_POE
                         "\n--Safe browsing" +
                         "\n--Scams" +
                         "\n--Privacy" +
+                        "\n--Task Assistant"+
+                        "\n--Quiz/Mini-Game"+
+                        "\n--Chat History"+
                         "Type 'exit' to stop the chatbot\n");
                         func.log.Push("Asking about the topics");
                         break;
@@ -190,6 +190,7 @@ namespace ST10281928_PROG6221_POE
                         }
                         outputBox.AppendText(topics["password"]);
                         func.log.Push("Asking about passwords");
+                        counter++;
                         break;
                     case string y when y.Contains("phishing"):
                         if (checkInterestTopic("phishing") == true)
@@ -198,6 +199,7 @@ namespace ST10281928_PROG6221_POE
                         }
                         outputBox.AppendText(topics["phishing"]);
                         func.log.Push("Asking about phishing");
+                        counter++;
                         break;
                     case string y when y.Contains("browsing"):
                         if (checkInterestTopic("browsing") == true)
@@ -206,6 +208,7 @@ namespace ST10281928_PROG6221_POE
                         }
                         outputBox.AppendText(topics["browsing"]);
                         func.log.Push("Asking about phishing");
+                        counter++;
                         break;
                     case string y when y.Contains("scam"):
                         if (checkInterestTopic("scam") == true)
@@ -214,6 +217,7 @@ namespace ST10281928_PROG6221_POE
                         }
                         outputBox.AppendText(scams[counter]);
                         func.log.Push("Asking about scams");
+                        counter++;
                         break;
                     case string y when y.Contains("privacy"):
                         if (checkInterestTopic("privacy") == true)
@@ -222,9 +226,10 @@ namespace ST10281928_PROG6221_POE
                         }
                         outputBox.AppendText(privacy[counter]);
                         func.log.Push("Asking about privacy");
+                        counter++;
                         break;
                     case string y when y.Contains("exit"):
-
+                        System.Windows.Application.Current.Shutdown();
                         break;
                     case string y when y.Contains("how are you"):
                         outputBox.AppendText("I am great how are you?");
@@ -238,6 +243,11 @@ namespace ST10281928_PROG6221_POE
                         break;
                     case string y when y.Contains("log"):
                         func.displayLog();
+                        func.log.Push("View activity log");
+                        break;
+                    case string y when y.Contains("quiz") || y.Contains("test"):
+                        func.quiz(input);
+                        func.log.Push("Quiz attempt");
                         break;
                     default:
                         outputBox.AppendText("Sorry I did not catch that\n");
