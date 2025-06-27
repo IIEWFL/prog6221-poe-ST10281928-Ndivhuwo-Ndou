@@ -22,10 +22,11 @@ namespace ST10281928_PROG6221_POE
     public partial class MainWindow : Window
     {
         private Responses resp;
+        private Functionality func;
         public MainWindow()
         {
             InitializeComponent();
-            resp = new Responses(output);
+            resp = new Responses(output, func);
             Play_Audio();
         }
 
@@ -41,6 +42,7 @@ namespace ST10281928_PROG6221_POE
         {
             //input.Text = "";
             resp.Basic_Responses(input.Text);
+            output.ScrollToEnd();
             input.Text = "";
         }
 

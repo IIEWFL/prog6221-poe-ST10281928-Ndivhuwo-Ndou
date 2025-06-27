@@ -11,15 +11,17 @@ namespace ST10281928_PROG6221_POE
     class Responses
     {
         private TextBox outputBox;
-
-        public Responses(TextBox outputBox)
+        private Functionality func;
+        public Responses(TextBox outputBox, Functionality func)
         {
             this.outputBox = outputBox;
+            this.func = new Functionality(outputBox);
         }
 
         public bool memory = false;
         public bool random = false;
         public bool sentimentFeedback = false;
+        public bool taskRemider = false;
 
         //Code Attribution
         //This method is for Dictionaries
@@ -147,12 +149,29 @@ namespace ST10281928_PROG6221_POE
                     return;
                 }
 
+                if(taskRemider == true)
+                {
+                    int counter = 0;
+                    if (counter <= 3)
+                    {
+                        func.taskAssistant(input);
+                        counter++;
+                        return;
+                    }
+                    else
+                    {
+                        taskRemider = false;
+                    }
+
+                }
+
                 switch (input.ToLower())
                 {
                     case string y when y.Contains("purpose"):
                         outputBox.AppendText("I am a chat bot that specialises in cyber security.\n" +
                             "I am here to assist you in understanding cyber security and give you tips on\n" +
                             "how to keep yourself safe and prevent any attacks from happening while on the internet.\n");
+                        func.log.Push("Asking about the purpose");
                         break;
                     case string y when y.Contains("topics"):
                         outputBox.AppendText("The topics I currently have knowledge on are:" +
@@ -162,6 +181,7 @@ namespace ST10281928_PROG6221_POE
                         "\n--Scams" +
                         "\n--Privacy" +
                         "Type 'exit' to stop the chatbot\n");
+                        func.log.Push("Asking about the topics");
                         break;
                     case string y when y.Contains("password"):
                         if (checkInterestTopic("password") == true)
@@ -169,6 +189,7 @@ namespace ST10281928_PROG6221_POE
                             outputBox.AppendText("I remember you were interested in the Password topic");
                         }
                         outputBox.AppendText(topics["password"]);
+                        func.log.Push("Asking about passwords");
                         break;
                     case string y when y.Contains("phishing"):
                         if (checkInterestTopic("phishing") == true)
@@ -176,6 +197,7 @@ namespace ST10281928_PROG6221_POE
                             outputBox.AppendText("I remember you were interested in the Phishing topic");
                         }
                         outputBox.AppendText(topics["phishing"]);
+                        func.log.Push("Asking about phishing");
                         break;
                     case string y when y.Contains("browsing"):
                         if (checkInterestTopic("browsing") == true)
@@ -183,6 +205,7 @@ namespace ST10281928_PROG6221_POE
                             outputBox.AppendText("I remember you were interested in the Safe Browsing topic");
                         }
                         outputBox.AppendText(topics["browsing"]);
+                        func.log.Push("Asking about phishing");
                         break;
                     case string y when y.Contains("scam"):
                         if (checkInterestTopic("scam") == true)
@@ -190,7 +213,7 @@ namespace ST10281928_PROG6221_POE
                             outputBox.AppendText("I remember you were interested in the Scam topic");
                         }
                         outputBox.AppendText(scams[counter]);
-                        
+                        func.log.Push("Asking about scams");
                         break;
                     case string y when y.Contains("privacy"):
                         if (checkInterestTopic("privacy") == true)
@@ -198,16 +221,23 @@ namespace ST10281928_PROG6221_POE
                             outputBox.AppendText("I remember you were interested in the Privacy topic");
                         }
                         outputBox.AppendText(privacy[counter]);
-                        
+                        func.log.Push("Asking about privacy");
                         break;
                     case string y when y.Contains("exit"):
 
                         break;
                     case string y when y.Contains("how are you"):
                         outputBox.AppendText("I am great how are you?");
+                        func.log.Push("Greeting the bot");
                         break;
-                    case string y when y.Contains("topics232"):
-
+                    case string y when y.Contains("task") || y.Contains("reminder"):
+                        func.taskAssistant(input);
+                        //outputBox.AppendText("What is the name of the task?");
+                        taskRemider = true;
+                        func.log.Push("Setting up a task");
+                        break;
+                    case string y when y.Contains("log"):
+                        func.displayLog();
                         break;
                     default:
                         outputBox.AppendText("Sorry I did not catch that\n");
